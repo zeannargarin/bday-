@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@300;400;500&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & TOKENS ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blush:    #FFF0F5;
+      --pink:     #F4A7B9;
+      --mauve:    #D4A0C0;
+      --sage:     #B5D5A8;
+      --gold:     #D4AF7A;
+      --gold-d:   #B8935A;
+      --rose:     #5C3A4A;
+      --petal:    #FAD4DF;
+      --cream:    #FFF8F2;
+      --ribbon:   #E891AD;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: var(--blush);
+      color: var(--rose);
+      overflow-x: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    /* ── STICKY HEADER ──────────────────────────────────────── */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,240,245,0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1.5px solid var(--pink);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .site-header span {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.25rem;
+      color: var(--mauve);
+      letter-spacing: 0.04em;
+    }
+
+    .header-flower { font-size: 1.1rem; animation: wobble 3s ease-in-out infinite; }
+
+    /* ── FLOATING PETALS (global) ───────────────────────────── */
+    .petal-layer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -60px;
+      font-size: 1.4rem;
+      opacity: 0.75;
+      animation: petalFall linear infinite;
+      user-select: none;
+    }
+
+    @keyframes petalFall {
+      0%   { transform: translateY(-60px) rotate(0deg) translateX(0); opacity: 0.8; }
+      50%  { transform: translateY(50vh)  rotate(180deg) translateX(30px); }
+      100% { transform: translateY(105vh) rotate(360deg) translateX(-20px); opacity: 0; }
+    }
+
+    /* ── SPARKLE CANVAS ─────────────────────────────────────── */
+    #sparkleCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── HERO SECTION ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      text-align: center;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    /* Ribbon banner top */
+    .ribbon-banner {
+      position: absolute;
+      top: 56px; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      pointer-events: none;
+    }
+
+    .ribbon-seg {
+      height: 26px;
+      flex: 1;
+      background: linear-gradient(90deg, var(--ribbon), var(--mauve), var(--ribbon));
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+      opacity: 0.65;
+    }
+
+    .ribbon-center {
+      width: 60px; height: 36px;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+      margin: 0 4px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(212,175,122,0.4);
+    }
+
+    /* Floral border row */
+    .floral-border {
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      margin: 18px 0 8px;
+      animation: gentlePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes gentlePulse {
+      0%,100% { opacity: 0.85; transform: scale(1); }
+      50%      { opacity: 1;    transform: scale(1.04); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
+      color: var(--mauve);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      animation: fadeUp 1s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 8vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--rose);
+      animation: bounceIn 1.2s cubic-bezier(.36,.07,.19,.97) both 0.3s;
+      text-shadow: 0 2px 12px rgba(212,160,192,0.35);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--ribbon);
+      display: block;
+    }
+
+    .hero-sub {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--gold-d);
+      margin: 14px 0 28px;
+      animation: fadeUp 1s ease both 0.7s;
+    }
+
+    .scroll-hint {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mauve);
+      opacity: 0.7;
+      animation: bounce 2s ease-in-out infinite 1.5s;
+    }
+
+    @keyframes bounceIn {
+      0%  { transform: scale(0.3) translateY(40px); opacity: 0; }
+      60% { transform: scale(1.08) translateY(-8px); opacity: 1; }
+      80% { transform: scale(0.96) translateY(4px); }
+      100%{ transform: scale(1) translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    @keyframes wobble {
+      0%,100% { transform: rotate(0deg); }
+      25%      { transform: rotate(12deg); }
+      75%      { transform: rotate(-12deg); }
+    }
+
+    /* ── RIBBON DIVIDER ─────────────────────────────────────── */
+    .divider {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0;
+      z-index: 2;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--pink), var(--mauve), var(--pink), transparent);
+      max-width: 380px;
+    }
+
+    .divider-bow {
+      font-size: 2rem;
+      margin: 0 16px;
+      animation: wobble 4s ease-in-out infinite;
+    }
+
+    /* ── LETTER SECTION ─────────────────────────────────────── */
+    .letter-section {
+      position: relative;
+      padding: 60px 24px 80px;
+      z-index: 2;
+    }
+
+    .letter-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      text-align: center;
+      color: var(--rose);
+      margin-bottom: 40px;
+    }
+
+    .letter-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Corner flowers */
+    .corner-flower {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.7;
+    }
+    .corner-flower.tl { top: -12px; left: -12px; transform: rotate(-20deg); }
+    .corner-flower.tr { top: -12px; right: -12px; transform: rotate(20deg); }
+    .corner-flower.bl { bottom: -12px; left: -12px; transform: rotate(20deg); }
+    .corner-flower.br { bottom: -12px; right: -12px; transform: rotate(-20deg); }
+
+    .letter-card {
+      background: var(--cream);
+      border: 1.5px solid var(--petal);
+      border-radius: 4px;
+      padding: 52px 52px 60px;
+      position: relative;
+      box-shadow:
+        0 4px 32px rgba(212,160,192,0.18),
+        0 1px 4px rgba(212,160,192,0.12),
+        inset 0 0 80px rgba(244,167,185,0.06);
+      /* lined paper effect */
+      background-image:
+        repeating-linear-gradient(
+          transparent,
+          transparent 31px,
+          rgba(212,160,192,0.12) 32px
+        );
+      background-size: 100% 32px;
+      background-position: 0 52px;
+    }
+
+    .letter-date {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.95rem;
+      color: var(--mauve);
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .letter-greeting {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--rose);
+      margin-bottom: 18px;
+    }
+
+    .letter-body {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.18rem;
+      line-height: 2;
+      color: var(--rose);
+      min-height: 200px;
+    }
+
+    .letter-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--ribbon);
+      vertical-align: text-bottom;
+      margin-left: 2px;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    .letter-sign {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.2rem;
+      color: var(--mauve);
+      text-align: right;
+      margin-top: 32px;
+    }
+
+    .wax-seal {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 3rem;
+      filter: drop-shadow(0 2px 6px rgba(180,100,130,0.25));
+      animation: gentlePulse 3s ease-in-out infinite;
+    }
+
+    /* ── GALLERY SECTION ────────────────────────────────────── */
+    .gallery-section {
+      position: relative;
+      padding: 60px 24px 80px;
+      z-index: 2;
+    }
+
+    .gallery-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      text-align: center;
+      color: var(--rose);
+      margin-bottom: 12px;
+    }
+
+    .gallery-sub {
+      text-align: center;
+      color: var(--mauve);
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 48px;
+    }
+
+    /* Vine decoration */
+    .vine {
+      text-align: center;
+      font-size: 1.4rem;
+      letter-spacing: 0.3em;
+      color: var(--sage);
+      margin-bottom: 36px;
+      opacity: 0.8;
+    }
+
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 36px 28px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 0 40px;
+    }
+
+    .polaroid {
+      background: #fff;
+      padding: 14px 14px 52px;
+      border-radius: 2px;
+      box-shadow: 0 4px 18px rgba(92,58,74,0.14), 0 1px 4px rgba(92,58,74,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .polaroid:nth-child(odd)  { transform: rotate(-2.5deg); }
+    .polaroid:nth-child(even) { transform: rotate(1.8deg); }
+    .polaroid:nth-child(3n)   { transform: rotate(-1deg); }
+
+    .polaroid:hover {
+      transform: rotate(0deg) translateY(-10px) scale(1.04) !important;
+      box-shadow: 0 16px 40px rgba(212,160,192,0.45), 0 4px 12px rgba(212,160,192,0.2);
+      z-index: 10;
+    }
+
+    .polaroid img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      filter: sepia(0.1) saturate(1.1);
+    }
+
+    .polaroid-caption {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1rem;
+      color: var(--rose);
+      text-align: center;
+      margin-top: 12px;
+      padding: 0 6px;
+      line-height: 1.3;
+    }
+
+    /* ── SCROLL REVEAL ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 32px 24px 48px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: var(--mauve);
+      border-top: 1.5px solid var(--petal);
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .letter-card { padding: 36px 28px 44px; }
+      .polaroid-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sparkle canvas -->
+  <canvas id="sparkleCanvas"></canvas>
+
+  <!-- Falling petals -->
+  <div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
+
+  <!-- ── STICKY HEADER ── -->
+  <header class="site-header" aria-label="Site header">
+    <span class="header-flower">🌸</span>
+    <span>Happy Birthday, My Dearest</span>
+    <span class="header-flower">🎀</span>
+  </header>
+
+  <!-- ══ HERO ══════════════════════════════════════════════════ -->
+  <section class="hero" aria-label="Birthday greeting">
+    <div class="ribbon-banner" aria-hidden="true">
+      <div class="ribbon-seg"></div>
+      <div class="ribbon-center"></div>
+      <div class="ribbon-seg"></div>
+    </div>
+
+    <p class="floral-border" aria-hidden="true">🌹 🌸 🌷 🌼 🌸 🌹</p>
+    <p class="hero-eyebrow">with all the love in the world</p>
+
+    <h1 class="hero-title">
+      Happy Birthday,
+      <em>My Love 🎂</em>
+    </h1>
+
+    <p class="hero-sub">✨ wishing you the most magical day ✨</p>
+    <p class="floral-border" aria-hidden="true">🌷 🌼 🌸 🌹 🌼 🌷</p>
+
+    <p class="scroll-hint" aria-label="Scroll down to read more">↓ scroll for your surprise ↓</p>
+  </section>
+
+  <!-- ribbon divider -->
+  <div class="divider" aria-hidden="true">
+    <div class="divider-line"></div>
+    <span class="divider-bow">🎀</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ══ LETTER ════════════════════════════════════════════════ -->
+  <section class="letter-section" aria-label="Birthday letter">
+    <h2 class="letter-section-title reveal">
+      <span aria-hidden="true">💌 </span>A Letter, Just for You
+    </h2>
+
+    <div class="letter-wrap reveal">
+      <span class="corner-flower tl" aria-hidden="true">🌸</span>
+      <span class="corner-flower tr" aria-hidden="true">🌷</span>
+      <span class="corner-flower bl" aria-hidden="true">🌹</span>
+      <span class="corner-flower br" aria-hidden="true">🌼</span>
+
+      <div class="letter-card">
+        <p class="letter-date" id="letterDate"></p>
+        <p class="letter-greeting">My dearest darling,</p>
+        <p class="letter-body" id="letterText" aria-live="polite"></p>
+        <p class="letter-sign">
+          Forever yours,<br/>
+          <em>With a heart full of flowers 🌷</em>
+        </p>
+      </div>
+
+      <div class="wax-seal" aria-label="Wax seal">💝</div>
+    </div>
+  </section>
+
+  <!-- ribbon divider -->
+  <div class="divider" aria-hidden="true">
+    <div class="divider-line"></div>
+    <span class="divider-bow">🌸</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ══ GALLERY ═══════════════════════════════════════════════ -->
+  <section class="gallery-section" aria-label="Photo collage">
+    <h2 class="gallery-section-title reveal">
+      <span aria-hidden="true">🖼️ </span>Our Little Moments
+    </h2>
+    <p class="gallery-sub reveal">polaroids of the sweetest memories ✨</p>
+    <p class="vine reveal" aria-hidden="true">🌿 🌸 🌿 🌸 🌿 🌸 🌿</p>
+
+    <div class="polaroid-grid reveal" id="polaroidGrid" role="list">
+      <!-- injected by JS -->
+    </div>
+  </section>
+
+  <!-- ribbon divider -->
+  <div class="divider" aria-hidden="true">
+    <div class="divider-line"></div>
+    <span class="divider-bow">🎀</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ══ FOOTER ════════════════════════════════════════════════ -->
+  <footer>
+    🌸 Made with endless love, just for you 🌸
+  </footer>
+
+  <!-- ══ JAVASCRIPT ════════════════════════════════════════════ -->
+  <script>
+  (() => {
+    'use strict';
+
+    /* ─ Date in letter ─ */
+    const d = new Date();
+    document.getElementById('letterDate').textContent =
+      d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    /* ─ Falling petals ─ */
+    const symbols = ['🌸','🌹','🌷','🌼','🌺','🎀','✨','💮'];
+    const layer = document.getElementById('petalLayer');
+    const PETAL_COUNT = 22;
+
+    for (let i = 0; i < PETAL_COUNT; i++) {
+      const el = document.createElement('span');
+      el.className = 'petal';
+      el.setAttribute('aria-hidden','true');
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+      el.style.opacity = (Math.random() * 0.5 + 0.3).toFixed(2);
+      const dur = (Math.random() * 12 + 8).toFixed(1);
+      const delay = (Math.random() * 16).toFixed(1);
+      el.style.animation = `petalFall ${dur}s ${delay}s linear infinite`;
+      layer.appendChild(el);
+    }
+
+    /* ─ Sparkle canvas ─ */
+    const canvas = document.getElementById('sparkleCanvas');
+    const ctx = canvas.getContext('2d');
+    let sparks = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function addSpark(x, y) {
+      sparks.push({ x, y, r: Math.random() * 3 + 1, life: 1, vx: (Math.random()-0.5)*2, vy: (Math.random()-0.5)*2 });
+    }
+
+    function drawSparks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      sparks = sparks.filter(s => s.life > 0);
+      for (const s of sparks) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * s.life, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212,175,122,${s.life * 0.7})`;
+        ctx.fill();
+        s.x += s.vx; s.y += s.vy; s.life -= 0.022;
+      }
+    }
+
+    // auto-spawn ambient sparks
+    setInterval(() => {
+      addSpark(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+    }, 120);
+
+    function loop() { drawSparks(); requestAnimationFrame(loop); }
+    loop();
+
+    /* ─ Typewriter letter ─ */
+    const letterText = `Today is a day that belongs entirely to you — a day painted in every colour of joy, wrapped in warmth, and tied with the softest ribbon of love. 🎀
+
+From the very first moment I met you, you have made every ordinary day feel like a celebration. Your laugh is my favourite song, your smile my greatest treasure.
+
+On this special day, I wish you skies full of petals, a heart full of wonder, and a life overflowing with all the beautiful things you deserve. May every candle you blow out carry a wish that comes true.
+
+You are loved more than words can hold. 🌸`;
+
+    const el = document.getElementById('letterText');
+    let idx = 0;
+    let started = false;
+
+    function startTypewriter() {
+      if (started) return;
+      started = true;
+      const cursor = document.createElement('span');
+      cursor.className = 'letter-cursor';
+      cursor.setAttribute('aria-hidden','true');
+      el.appendChild(cursor);
+
+      function type() {
+        if (idx < letterText.length) {
+          cursor.before(document.createTextNode(letterText[idx]));
+          idx++;
+          setTimeout(type, 22);
+        }
+      }
+      type();
+    }
+
+    /* ─ Polaroids ─ */
+    const captions = [
+      'pure magic ✨', 'my favourite smile 🌸', 'golden hour 🌼',
+      'forever & always 💕', 'the sweetest memory 🍰', 'just us 🌷',
+      'you & me 🎀', 'sunshine in human form 🌺', 'every little moment 💖',
+    ];
+
+    const grid = document.getElementById('polaroidGrid');
+    // unique picsum IDs for consistent images
+    const ids = [237,433,338,103,452,64,200,118,430];
+
+    ids.forEach((id, i) => {
+      const item = document.createElement('div');
+      item.className = 'polaroid';
+      item.setAttribute('role','listitem');
+      item.innerHTML = `
+        <img src="https://picsum.photos/seed/${id}/400/400" alt="Memory ${i+1}" loading="lazy" />
+        <p class="polaroid-caption">${captions[i]}</p>
+      `;
+      grid.appendChild(item);
+    });
+
+    /* ─ Scroll reveal (Intersection Observer) ─ */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // start typewriter when letter section appears
+          if (e.target.classList.contains('letter-wrap')) startTypewriter();
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealEls.forEach(el => observer.observe(el));
+
+  })();
+  </script>
+</body>
+</html>
